@@ -34,6 +34,7 @@ export class AppComponent {
       chatMessage.message = receivedMessage;
       chatMessage.timestamp = timestamp;
       this.messages.push(chatMessage);
+      this.message = '';
     });
   }
 
