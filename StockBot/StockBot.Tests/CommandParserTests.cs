@@ -36,5 +36,12 @@ namespace StockBot.Tests
             var cmd = this.sut.Parse("/=");
             Assert.IsFalse(cmd.IsCommand);
         }
+
+        [TestMethod]
+        public void CommandKeyParsedCorrectly()
+        {
+            var cmd = this.sut.Parse("/stock=code");
+            Assert.AreEqual("stock", cmd.CommandKey);
+        }
     }
 }
