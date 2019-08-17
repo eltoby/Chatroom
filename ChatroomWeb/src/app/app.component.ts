@@ -44,4 +44,10 @@ export class AppComponent {
       .invoke('sendToAll', this.nick, this.message, timestamp)
       .catch(err => console.error(err));
   }
+
+  public getMessages(): ChatMessage[]
+  {
+    var items  = this.messages.sort((m1, m2) => { if (m1.timestamp >= m2.timestamp) return 1; else return -1;});
+    return items;
+  }
 }

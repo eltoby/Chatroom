@@ -18,7 +18,7 @@
     <table>
 
     
-    <tr *ngFor="let message of messages">
+    <tr *ngFor="let message of getMessages()">
       <th style="text-align: right">{{message.nick}}</th>
       <td style="text-align: right">({{message.timestamp | date : 'M/d/yy, h:mm a'}})</td>
       <td style="text-align: left">{{message.message}}</td>
