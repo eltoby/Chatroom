@@ -9,15 +9,17 @@
         private ChatBot sut;
         private ICommandParser commandParser;
         private IValidCommandsCatalog validCommandsCatalog;
+        private ICommandProcessorFactory commandProcessorFactory;
 
         [TestInitialize]
         public void Setup()
         {
             this.commandParser = Mock.Of<ICommandParser>();
             this.validCommandsCatalog = Mock.Of<IValidCommandsCatalog>();
+            this.commandProcessorFactory = Mock.Of<ICommandProcessorFactory>();
 
             Mock.Get(this.validCommandsCatalog).Setup(x => x.GetValidCommands()).Returns(new[] { "stock" });            
-            this.sut = new ChatBot(this.commandParser, this.validCommandsCatalog);
+            this.sut = new ChatBot(this.commandParser, this.validCommandsCatalog, this.commandProcessorFactory);
         }
 
         [TestMethod]

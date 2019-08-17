@@ -4,11 +4,13 @@
     {
         private readonly ICommandParser commandParser;
         private readonly IValidCommandsCatalog validCommandsCatalog;
+        private readonly ICommandProcessorFactory commandProcessorFactory;
 
-        public ChatBot(ICommandParser commandParser, IValidCommandsCatalog validCommandsCatalog)
+        public ChatBot(ICommandParser commandParser, IValidCommandsCatalog validCommandsCatalog, ICommandProcessorFactory commandProcessorFactory)
         {
             this.commandParser = commandParser;
             this.validCommandsCatalog = validCommandsCatalog;
+            this.commandProcessorFactory = commandProcessorFactory;
         }
 
         public string Process(string message)
@@ -24,7 +26,8 @@
                 return $"Invalid command. Please use a valid command (Valid commands: {validCommands})";
             }
 
-            return "Message Processed!!!";
+            var cmdProcessor = this.commandProcessorFactory.Create(cmd);
+            return cmdProcessor.Process();
         }
     }
 }
