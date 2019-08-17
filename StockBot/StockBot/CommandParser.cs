@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace StockBot
 {
@@ -8,9 +9,15 @@ namespace StockBot
         {
             var cmd = new BotCommand
             {
-                IsCommand = message.StartsWith("/")
+                IsCommand = IsCommand(message)
             };
             return cmd;
+        }
+
+        private static bool IsCommand(string message)
+        {
+            var match = Regex.Match(message, @"/\w*=\w*");
+            return match.Success;
         }
     }
 }

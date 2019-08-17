@@ -19,8 +19,15 @@ namespace StockBot.Tests
         [TestMethod]
         public void MessageStartingWithSlashIsCommand()
         {
-            var cmd = this.sut.Parse("/stock");
+            var cmd = this.sut.Parse("/stock=code");
             Assert.IsTrue(cmd.IsCommand);
+        }
+
+        [TestMethod]
+        public void CommandsMustContainEqual()
+        {
+            var cmd = this.sut.Parse("/stock:code");
+            Assert.IsFalse(cmd.IsCommand);
         }
     }
 }
