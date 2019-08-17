@@ -16,7 +16,7 @@ namespace StockBot
 
         private static bool IsCommand(string message)
         {
-            var match = Regex.Match(message, @"/\w*=\w*");
+            var match = Regex.Match(message, @"/\w+=\w+");
             return match.Success;
         }
     }

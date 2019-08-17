@@ -29,5 +29,12 @@ namespace StockBot.Tests
             var cmd = this.sut.Parse("/stock:code");
             Assert.IsFalse(cmd.IsCommand);
         }
+
+        [TestMethod]
+        public void CommandsMustContainKeyAndValue()
+        {
+            var cmd = this.sut.Parse("/=");
+            Assert.IsFalse(cmd.IsCommand);
+        }
     }
 }
