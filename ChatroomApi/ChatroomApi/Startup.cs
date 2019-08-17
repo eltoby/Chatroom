@@ -25,7 +25,8 @@
                 builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithOrigins("http://localhost:4200");
+                .AllowAnyOrigin();
+                //.WithOrigins("http://localhost:4200");
             }));
 
             services.AddSignalR();

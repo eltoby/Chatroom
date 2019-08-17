@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,6 +43,20 @@ namespace StockBot
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            var apiUrl = Environment.GetEnvironmentVariable("apiUrl");
+            var connection = new HubConnection(apiUrl, false);
+            
+            var proxy = connection.CreateHubProxy("");
+            var chatBot = new ChatBot();
+            proxy.On<ChatMessage>("sendToAll", x =>
+            {
+                if (x.Nick != "bot")
+                {
+                    connection.Send(new ChatMessage() { Nick = "bot", Message = "Message Received!", TimeStamp = DateTime.Now.ToString("yyyyMMddHHmmssffff") });
+                }
+            });
+            connection.Start();
         }
     }
 }
