@@ -1,6 +1,5 @@
 ﻿namespace StockBot
 {
-    using System;
     using System.Text.RegularExpressions;
 
     public class CommandParser : ICommandParser
@@ -17,7 +16,6 @@
                 cmd.Key = this.GetCommandKey(message);
                 cmd.Value = this.GetCommandValue(message);
             }
-
             return cmd;
         }
 
