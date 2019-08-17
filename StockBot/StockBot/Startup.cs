@@ -25,6 +25,7 @@
             services.AddTransient<IChatBot, ChatBot>();
             services.AddTransient<ITimeStampGenerator, TimeStampGenerator>();
             services.AddTransient<IChatBotLauncher, ChatBotLauncher>();
+            services.AddTransient<ICommandParser, CommandParser>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

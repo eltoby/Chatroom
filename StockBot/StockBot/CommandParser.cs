@@ -1,9 +1,8 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace StockBot
+﻿namespace StockBot
 {
-    public class CommandParser
+    using System.Text.RegularExpressions;
+
+    public class CommandParser : ICommandParser
     {
         public BotCommand Parse(string message)
         {
