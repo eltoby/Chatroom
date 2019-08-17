@@ -1,6 +1,6 @@
 ﻿namespace StockBot
 {
-    public class ChatBot
+    public class ChatBot : IChatBot
     {
         public string Process(string message)
         {

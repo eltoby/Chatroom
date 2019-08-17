@@ -2,7 +2,7 @@
 {
     using System;
 
-    public class TimeStampGenerator
+    public class TimeStampGenerator : ITimeStampGenerator
     {
         public double GetTimeStamp()
         {

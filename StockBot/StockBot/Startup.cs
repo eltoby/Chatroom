@@ -21,10 +21,13 @@
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddTransient<IChatBot, ChatBot>();
+            services.AddTransient<ITimeStampGenerator, TimeStampGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IChatBot chatBot, ITimeStampGenerator timeStampGenerator)
         {
             if (env.IsDevelopment())
             {
@@ -41,10 +44,6 @@
             var apiUrl = Environment.GetEnvironmentVariable("apiUrl");
             var connection = new HubConnectionBuilder().WithUrl(apiUrl).Build();
 
-
-            var chatBot = new ChatBot();
-
-            var timeStampGenerator = new TimeStampGenerator();
 
             connection.On<string, string, double>("sendToAll", (nick, message, timeStamp) =>
               {
