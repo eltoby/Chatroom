@@ -24,10 +24,11 @@
 
             services.AddTransient<IChatBot, ChatBot>();
             services.AddTransient<ITimeStampGenerator, TimeStampGenerator>();
+            services.AddTransient<IChatBotLauncher, ChatBotLauncher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IChatBot chatBot, ITimeStampGenerator timeStampGenerator)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IChatBotLauncher chatBotLauncher)
         {
             if (env.IsDevelopment())
             {
@@ -41,22 +42,7 @@
             app.UseHttpsRedirection();
             app.UseMvc();
 
-            var apiUrl = Environment.GetEnvironmentVariable("apiUrl");
-            var connection = new HubConnectionBuilder().WithUrl(apiUrl).Build();
-
-
-            connection.On<string, string, double>("sendToAll", (nick, message, timeStamp) =>
-              {
-                  if (nick != "bot")
-                  {
-                      var result = chatBot.Process(message);
-                      
-                      if (!string.IsNullOrEmpty(result))
-                        connection.InvokeAsync("sendToAll", "bot", result, timeStampGenerator.GetTimeStamp());
-                  }
-              });
-
-            connection.StartAsync();
+            chatBotLauncher.Launch();
         }
     }
 }
