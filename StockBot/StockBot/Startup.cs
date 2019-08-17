@@ -49,7 +49,12 @@
             connection.On<string, string, double>("sendToAll", (nick, message, timeStamp) =>
               {
                   if (nick != "bot")
-                      connection.InvokeAsync("sendToAll", "bot", "Message Received!", timeStampGenerator.GetTimeStamp());
+                  {
+                      var result = chatBot.Process(message);
+                      
+                      if (!string.IsNullOrEmpty(result))
+                        connection.InvokeAsync("sendToAll", "bot", result, timeStampGenerator.GetTimeStamp());
+                  }
               });
 
             connection.StartAsync();

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-
-namespace StockBot
+﻿namespace StockBot
 {
     public class ChatBot
     {
-        public void Process(ChatMessage message)
+        public string Process(string message)
         {
-            
+            return "Message Processed!!!";
         }
     }
 }
