@@ -22,10 +22,10 @@
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
-            services.AddTransient<IChatBot, ChatBot>();
-            services.AddTransient<ITimeStampGenerator, TimeStampGenerator>();
-            services.AddTransient<IChatBotLauncher, ChatBotLauncher>();
-            services.AddTransient<ICommandParser, CommandParser>();
+            services.Scan(scan =>
+                scan.FromCallingAssembly()
+                .AddClasses()
+                .AsMatchingInterface());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
