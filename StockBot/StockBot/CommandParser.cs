@@ -14,10 +14,16 @@
 
             if (cmd.IsCommand)
             {
-                cmd.CommandKey = this.GetCommandKey(message);
+                cmd.Key = this.GetCommandKey(message);
+                cmd.Value = this.GetCommandValue(message);
             }
 
             return cmd;
+        }
+
+        private string GetCommandValue(string message)
+        {
+            return message.Substring(message.IndexOf("=") + 1);
         }
 
         private string GetCommandKey(string message)

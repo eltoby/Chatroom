@@ -4,6 +4,8 @@
     {
         public bool IsCommand { get; set; }
 
-        public string CommandKey { get; set; }
+        public string Key { get; set; }
+
+        public string Value { get; set; }
     }
 }
