@@ -26,7 +26,6 @@
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowAnyOrigin();
-                //.WithOrigins("http://localhost:4200");
             }));
 
             services.AddSignalR();
