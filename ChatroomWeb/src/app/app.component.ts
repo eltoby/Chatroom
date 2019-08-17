@@ -47,10 +47,10 @@ export class AppComponent {
 
   public getMessages(): ChatMessage[]
   {
-    let result = this.messages
+    this.messages = this.messages
       .sort((m1, m2) => { if (m1.timestamp >= m2.timestamp) return 1; else return -1;})
-      .slice(Math.max(this.messages.length - 50, 0));
+      .slice(Math.max(this.messages.length - environment.maxMessages, 0));
     
-    return result;
+    return this.messages;
   }
 }

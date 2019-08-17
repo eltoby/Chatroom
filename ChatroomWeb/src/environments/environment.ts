@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://localhost:44324"
+  apiUrl: "https://localhost:44324",
+  maxMessages: 50
 };
 
 /*
