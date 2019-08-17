@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HttpTransportType  } from '@aspnet/signalr';
 import { environment } from './../environments/environment';
+import { ChatMessage } from 'src/entities/ChatMessage';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,7 @@ export class AppComponent {
   private hubConnection : HubConnection;
   nick = '';
   message = '';
-  messages: string[] = [];
+  messages: ChatMessage[] = [];
   title = 'ChatroomWeb';
 
   ngOnInit() {
@@ -26,10 +27,13 @@ export class AppComponent {
       .start()
       .then(() => console.log('Connection started!'))
       .catch(err => console.log('Error while establishing connection :('));
-
-    this.hubConnection.on('sendToAll', (nick: string, receivedMessage: string, timestamp: string) => {
-      const text = `${nick}: ${receivedMessage}`;
-      this.messages.push(text);
+    
+    this.hubConnection.on('sendToAll', (nick: string, receivedMessage: string, timestamp: number) => {
+      let chatMessage = new ChatMessage();
+      chatMessage.nick = nick;
+      chatMessage.message = receivedMessage;
+      chatMessage.timestamp = timestamp;
+      this.messages.push(chatMessage);
     });
   }
 

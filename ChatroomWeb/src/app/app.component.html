@@ -2,7 +2,7 @@
   <h1>Chatroom</h1>
 
   <div class="container">
-    <h2>Hello {{nick}}!</h2>
+    <h2>Logged as {{nick}}</h2>
     <form (ngSubmit)="sendMessage()" #chatForm="ngForm">
       <div>
         <label for="message">Message</label>
@@ -15,9 +15,16 @@
   </div>
 
   <div class="container" *ngIf="messages.length > 0">
-    <div *ngFor="let message of messages">
-      <span>{{message}}</span>
-    </div>
+    <table>
+
+    
+    <tr *ngFor="let message of messages">
+      <th style="text-align: right">{{message.nick}}</th>
+      <td style="text-align: right">({{message.timestamp | date : 'M/d/yy, h:mm a'}})</td>
+      <td style="text-align: left">{{message.message}}</td>
+    </tr>
+
+  </table>
   </div>
 
 </div>
