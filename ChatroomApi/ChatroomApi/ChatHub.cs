@@ -4,9 +4,9 @@
 
     public class ChatHub : Hub
     {
-        public void SendToAll(string name, string message)
+        public void SendToAll(string name, string message, string timestamp)
         {
-            this.Clients.All.SendAsync("sendToAll", name, message);
+            this.Clients.All.SendAsync("sendToAll", name, message, timestamp);
         }
     }
 }
