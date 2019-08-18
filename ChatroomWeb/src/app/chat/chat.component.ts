@@ -68,10 +68,6 @@ export class ChatComponent implements OnInit {
     }).subscribe(response => {
     }, err => { console.error(err)
     });
-    
-    // this.hubConnection
-    //   .invoke('sendToAll', this.nick, this.message, timestamp)
-    //   .catch(err => console.error(err));
   }
 
   public getMessages(): ChatMessage[]
