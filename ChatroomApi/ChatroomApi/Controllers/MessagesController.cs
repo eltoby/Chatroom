@@ -8,7 +8,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
-    using Microsoft.Extensions.Options;
 
     [Route("api/Messages")]
     [ApiController]
@@ -17,7 +16,6 @@
     {
         private readonly IHubContext<ChatHub> hub;
         private readonly IMessageService messageService;
-        private readonly IOptions<AppSettings> appSettings;
 
         public MessagesController(IHubContext<ChatHub> hub, IMessageService messageService)
         {
