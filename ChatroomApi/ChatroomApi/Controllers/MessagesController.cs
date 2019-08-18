@@ -33,7 +33,8 @@
                 Timestamp = message.Timestamp
             };
 
-            this.messageService.AddMessage(messageObj);
+            if (!message.Message.StartsWith("/"))
+                this.messageService.AddMessage(messageObj);
         }
 
     }
