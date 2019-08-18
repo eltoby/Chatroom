@@ -3,6 +3,7 @@ import { HubConnection, HubConnectionBuilder, HttpTransportType  } from '@aspnet
 import { environment } from '../../environments/environment';
 import { ChatMessage } from 'src/entities/ChatMessage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MessagesService } from '../api/messages.service';
 
 @Component({
   selector: 'app-chat',
@@ -16,20 +17,15 @@ export class ChatComponent implements OnInit {
   messages: ChatMessage[] = [];
   title = 'ChatroomWeb';
 
-  constructor(private http: HttpClient){ }
+  constructor(private messageService: MessagesService){ }
 
   ngOnInit() {
     this.nick = localStorage.getItem("user");
-    let token = localStorage.getItem("jwt");
 
-    this.http.get(`${environment.apiUrl}/api/Messages/GetLastMessages`, {
-      headers: new HttpHeaders({
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-      })}).subscribe
-      (
-        (result:ChatMessage[]) => this.messages = result
-      );
+    this.messageService.getLastMessages().subscribe
+    (
+      (result:ChatMessage[]) => this.messages = result
+    );
 
     this.hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/chat`, {
       skipNegotiation: true,
@@ -46,28 +42,15 @@ export class ChatComponent implements OnInit {
       chatMessage.nick = nick;
       chatMessage.message = receivedMessage;
       chatMessage.timestamp = timestamp;
-      this.messages.push(chatMessage);
-      this.message = '';
+      this.messages.push(chatMessage);      
     });
   }
 
   public sendMessage(): void {
-    let timestamp = Date.now();
-    let model = {
-       'nick' : this.nick,
-       'message' : this.message,
-       'timestamp' : timestamp
-      };
-
-    let token = localStorage.getItem("jwt");
-    this.http.post(`${environment.apiUrl}/api/Messages/SendMessage`, model, {
-      headers: new HttpHeaders({
-        "Authorization": "Bearer " + token,
-        "Content-Type": "application/json"
-      })
-    }).subscribe(response => {
-    }, err => { console.error(err)
-    });
+    this.messageService.sendMessage(this.nick, this.message).subscribe(
+      () => { this.message = ''; }
+      , (err: any) => { console.error(err) }
+      );
   }
 
   public getMessages(): ChatMessage[]

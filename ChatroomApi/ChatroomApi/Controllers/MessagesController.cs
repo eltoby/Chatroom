@@ -9,7 +9,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.SignalR;
 
-    [Route("api/Messages")]
+    [Route("api/messages")]
     [ApiController]
     [Produces("application/json")]
     public class MessagesController : ControllerBase
@@ -23,7 +23,7 @@
             this.messageService = messageService;
         }
 
-        [Authorize, HttpPost, Route("SendMessage")]
+        [Authorize, HttpPost, Route("sendMessage")]
         public void SendMessage([FromBody]MessageModel message)
         {
             this.hub.Clients.All.SendAsync("sendToAll", message.Nick, message.Message, message.Timestamp);
@@ -39,7 +39,7 @@
                 this.messageService.AddMessage(messageObj);
         }
 
-        [Route("GetLastMessages")]
+        [Route("getLastMessages")]
         public IEnumerable<MessageModel> GetLastMessages()
         {
             var messages = this.messageService.GetLastMessages();
