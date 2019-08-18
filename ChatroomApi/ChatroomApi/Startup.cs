@@ -1,6 +1,7 @@
 ﻿namespace ChatroomApi
 {
     using System.Text;
+    using ChatroomApi.Service;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -47,6 +48,12 @@
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddSignalR();
+
+            services.Scan(scan =>
+                scan.FromCallingAssembly()
+                .FromAssembliesOf(typeof(IUserService))
+                .AddClasses()
+                .AsMatchingInterface());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

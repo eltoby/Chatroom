@@ -1,14 +1,16 @@
-<form class="form-signin" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
-  <div class="container-fluid">
-    <h2 class="form-signin-heading">Login</h2>
-    <div *ngIf="invalidLogin" class="alert alert-danger">Invalid username or password.</div>
+<form #loginForm="ngForm" (ngSubmit)="login(loginForm)">
+  <div>
+    <h2>Login</h2>
+    <div *ngIf="errorMessage">{{errorMessage}}</div>
     <br/>
-    <label for="username" class="sr-only">User name</label>
-    <input type="text" id="username" name="user" ngModel class="form-control" placeholder="User Name" required autofocus>
+    <label for="username">User name</label>
+    <input type="text" id="username" name="user" ngModel placeholder="User Name" required autofocus>
     <br/>
-    <label for="password" class="sr-only">Password</label>
-    <input type="password" id="password" name="password" ngModel class="form-control" placeholder="Password" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" ngModel placeholder="Password" required>
     <br/>
+    <label for="newUser">I'm a new user</label>
+    <input type="checkbox" [(ngModel)]="newUser" [ngModelOptions]="{standalone: true}" id="newUser" name="newUser">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
   </div>
 </form>

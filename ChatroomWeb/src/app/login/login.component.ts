@@ -10,8 +10,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  private serviceUrl = `${environment.apiUrl}/api/auth/login`;
-  invalidLogin: boolean;
+  private serviceUrl = `${environment.apiUrl}/api/auth`;
+  errorMessage: string;
+  newUser: boolean;
   
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -20,19 +21,25 @@ export class LoginComponent implements OnInit {
 
   login(form: NgForm) {
     let credentials = JSON.stringify(form.value);
-    this.http.post(this.serviceUrl, credentials, {
-      headers: new HttpHeaders({
-        "Content-Type": "application/json"
-      })
+
+    let url = `${this.serviceUrl}/login`;
+
+    if (this.newUser)
+      url = `${this.serviceUrl}/addUser`;
+
+      this.http.post(url, credentials, {
+        headers: new HttpHeaders({
+          "Content-Type": "application/json"
+        })
     }).subscribe(response => {
       let token = (<any>response).token;
       let user = (<any>response).user;
       localStorage.setItem("jwt", token);
       localStorage.setItem("user", user)
-      this.invalidLogin = false;
+      this.errorMessage = "";
       this.router.navigate(["/"]);
     }, err => {
-      this.invalidLogin = true;
+      this.errorMessage = err.error;
     });
   }
 
