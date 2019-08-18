@@ -9,6 +9,7 @@
     using ChatroomApi.Models;
     using ChatroomApi.Service;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
 
     [Route("api/auth")]
@@ -16,10 +17,12 @@
     public class AuthController : ControllerBase
     {
         private readonly IUserService userService;
+        private readonly IOptions<AppSettings> appSettings;
 
-        public AuthController(IUserService userService)
+        public AuthController(IUserService userService, IOptions<AppSettings> appSettings)
         {
             this.userService = userService;
+            this.appSettings = appSettings;
         }
 
         // GET api/values
@@ -35,9 +38,11 @@
             var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-            var tokeOptions = new JwtSecurityToken(
-                issuer: "http://localhost:44324",
-                audience: "http://localhost:44324",
+            var baseUrl = this.appSettings.Value.BaseUrl;
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: baseUrl,
+                audience: baseUrl,
                 claims: new List<Claim>()
                 {
                     new Claim(ClaimTypes.Name, login.User)
@@ -46,16 +51,18 @@
                 signingCredentials: signinCredentials
             );
 
-            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-            return this.Ok(new { Token = tokenString, User = login.User });
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+            return this.Ok(new { Token = tokenString, login.User });
         }
 
         [Route("addUser")]
         public IActionResult AddUser([FromBody]LoginModel login)
         {
-            var user = new User();
-            user.Username = login.User;
-            user.Password = login.Password;
+            var user = new User
+            {
+                Username = login.User,
+                Password = login.Password
+            };
 
             if (this.userService.AddUser(user))
                 return this.Login(login);

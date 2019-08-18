@@ -8,13 +8,18 @@
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
 
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostingEnvironment env)
         {
-            this.Configuration = configuration;
+            var builder = new ConfigurationBuilder()
+            .SetBasePath(env.ContentRootPath)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            this.Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -22,6 +27,8 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
                 builder
@@ -29,6 +36,10 @@
                 .AllowAnyHeader()
                 .AllowAnyOrigin();
             }));
+
+            var sp = services.BuildServiceProvider();
+            var appSettings = sp.GetService<IOptions<AppSettings>>();
+            var baseUrl = appSettings.Value.BaseUrl;
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -39,8 +50,8 @@
                         ValidateAudience = true,
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = "http://localhost:44324",
-                        ValidAudience = "http://localhost:44324",
+                        ValidIssuer = baseUrl,
+                        ValidAudience = baseUrl,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
                     };
                 });
