@@ -20,6 +20,16 @@ export class ChatComponent implements OnInit {
 
   ngOnInit() {
     this.nick = localStorage.getItem("user");
+    let token = localStorage.getItem("jwt");
+
+    this.http.get(`${environment.apiUrl}/api/Messages/GetLastMessages`, {
+      headers: new HttpHeaders({
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      })}).subscribe
+      (
+        (result:ChatMessage[]) => this.messages = result
+      );
 
     this.hubConnection = new HubConnectionBuilder().withUrl(`${environment.apiUrl}/chat`, {
       skipNegotiation: true,
@@ -44,7 +54,7 @@ export class ChatComponent implements OnInit {
   public sendMessage(): void {
     let timestamp = Date.now();
     let model = {
-       'name' : this.nick,
+       'nick' : this.nick,
        'message' : this.message,
        'timestamp' : timestamp
       };

@@ -1,6 +1,7 @@
 ﻿namespace ChatroomApi
 {
     using System.Text;
+    using ChatroomApi.Domain;
     using ChatroomApi.Service;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
