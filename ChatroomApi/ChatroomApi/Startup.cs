@@ -11,8 +11,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
-    using RabbitMQ.Client;
-    using RabbitMQ.Client.Events;
 
     public class Startup
     {
