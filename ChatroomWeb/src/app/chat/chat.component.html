@@ -1,12 +1,10 @@
 <div id="main-container" style="text-align:center">
-  <h1>Chatroom</h1>
-
-  <div class="container">
-    <h2>Logged as {{nick}}</h2>
+  <h1>Chatroom - Logged as {{nick}}</h1>
+  <div>
+    
     <form (ngSubmit)="sendMessage()" #chatForm="ngForm">
-      <div>
-        <label for="message">Message</label>
-        <input type="text" id="message" name="message" [(ngModel)]="message" required>
+      <div style="width: 100%">
+        <input type="text" id="message" name="message" [(ngModel)]="message" placeholder="Your message" required>
       </div>
       <button type="submit" id="sendmessage" [disabled]="!chatForm.valid">
         Send
