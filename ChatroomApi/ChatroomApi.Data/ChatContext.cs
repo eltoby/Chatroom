@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
 
-    public class ChatContext : DbContext
+    public class ChatContext : DbContext, IChatContext
     {
         public ChatContext() : base()
         {

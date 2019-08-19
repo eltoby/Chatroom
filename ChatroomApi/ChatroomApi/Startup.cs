@@ -1,6 +1,7 @@
 ﻿namespace ChatroomApi
 {
     using System.Text;
+    using ChatroomApi.Data;
     using ChatroomApi.Domain;
     using ChatroomApi.Service;
     using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -66,6 +67,11 @@
 
             services.Scan(scan =>
                 scan.FromAssembliesOf(typeof(IUserService))
+                .AddClasses()
+                .AsMatchingInterface());
+
+            services.Scan(scan =>
+                scan.FromAssembliesOf(typeof(IChatContext))
                 .AddClasses()
                 .AsMatchingInterface());
         }

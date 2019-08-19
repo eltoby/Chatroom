@@ -6,9 +6,16 @@
 
     public class UserService : IUserService
     {
+        private readonly IChatContextBuilder chatContextBuilder;
+
+        public UserService(IChatContextBuilder chatContextBuilder)
+        {
+            this.chatContextBuilder = chatContextBuilder;
+        }
+
         public bool AddUser(User user)
         {
-            using (var db = new ChatContext())
+            using (var db = this.chatContextBuilder.Create())
             {
                 if (db.Users.Any(x => x.Username == user.Username))
                     return false;
@@ -23,7 +30,7 @@
 
         public bool IsValidUser(string userName, string password)
         {
-            using (var db = new ChatContext())
+            using (var db = this.chatContextBuilder.Create())
             {
                 var user = db.Users.SingleOrDefault(x => x.Username == userName);
 
