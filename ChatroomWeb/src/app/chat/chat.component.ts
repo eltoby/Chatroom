@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HubConnection, HubConnectionBuilder, HttpTransportType  } from '@aspnet/signalr';
 import { environment } from '../../environments/environment';
 import { ChatMessage } from 'src/entities/ChatMessage';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessagesService } from '../api/messages.service';
 
 @Component({
