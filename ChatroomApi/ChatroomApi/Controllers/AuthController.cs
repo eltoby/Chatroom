@@ -25,7 +25,6 @@
             this.appSettings = appSettings;
         }
 
-        // GET api/values
         [HttpPost, Route("login")]
         public IActionResult Login([FromBody]LoginModel login)
         {
