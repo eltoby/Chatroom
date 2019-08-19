@@ -65,5 +65,44 @@
 
             Assert.AreEqual(200, result.StatusCode);
         }
+
+        [TestMethod]
+        public void AddExistingUserFails()
+        {
+            var login = new LoginModel
+            {
+                User = "Pablo",
+                Password = "pass"
+            };
+
+            Mock.Get(this.userService).Setup(x => x.AddUser(It.IsAny<User>())).Returns(false);
+            var result = this.sut.AddUser(login) as BadRequestObjectResult;
+
+            Assert.AreEqual(400, result.StatusCode);
+            Assert.AreEqual("Username already exists", result.Value);
+        }
+
+        [TestMethod]
+        public void AddUserTest()
+        {
+            var login = new LoginModel
+            {
+                User = "Pablo",
+                Password = "pass"
+            };
+
+            Mock.Get(this.userService).Setup(x => x.AddUser(It.IsAny<User>())).Returns(true);
+            Mock.Get(this.userService).Setup(x => x.IsValidUser("Pablo", "pass")).Returns(true);
+            var fakeAppSettings = new AppSettings
+            {
+                BaseUrl = "http://localhost"
+            };
+
+            Mock.Get(this.appSettings).Setup(x => x.Value).Returns(fakeAppSettings);
+
+            var result = this.sut.AddUser(login) as OkObjectResult;
+
+            Assert.AreEqual(200, result.StatusCode);
+        }
     }
 }
