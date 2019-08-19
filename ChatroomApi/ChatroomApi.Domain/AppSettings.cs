@@ -4,6 +4,8 @@
     {
         public string BaseUrl { get; set; }
 
+        public int TokenExpirationMinutes { get; set; }
+
         public int MaxMessages { get; set; }
 
         public string MqUrl { get; set; }

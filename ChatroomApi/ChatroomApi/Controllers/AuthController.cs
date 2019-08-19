@@ -46,7 +46,7 @@
                 {
                     new Claim(ClaimTypes.Name, login.User)
                 },
-                expires: DateTime.Now.AddMinutes(5),
+                expires: DateTime.Now.AddMinutes(this.appSettings.Value.TokenExpirationMinutes),
                 signingCredentials: signinCredentials
             );
 
