@@ -11,6 +11,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Microsoft.IdentityModel.Tokens;
+    using RabbitMQ.Client;
+    using RabbitMQ.Client.Events;
 
     public class Startup
     {
@@ -28,8 +30,6 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
-
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
                 builder
@@ -38,6 +38,7 @@
                 .AllowAnyOrigin();
             }));
 
+            services.Configure<AppSettings>(this.Configuration.GetSection("AppSettings"));
             var sp = services.BuildServiceProvider();
             var appSettings = sp.GetService<IOptions<AppSettings>>();
             var baseUrl = appSettings.Value.BaseUrl;
@@ -63,13 +64,17 @@
 
             services.Scan(scan =>
                 scan.FromCallingAssembly()
-                .FromAssembliesOf(typeof(IUserService))
+                .AddClasses()
+                .AsMatchingInterface());
+
+            services.Scan(scan =>
+                scan.FromAssembliesOf(typeof(IUserService))
                 .AddClasses()
                 .AsMatchingInterface());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IMessageQueueHandler mqHandler)
         {
             if (env.IsDevelopment())
             {
@@ -92,6 +97,8 @@
             {
                 routes.MapHub<ChatHub>("/chat");
             });
+
+            mqHandler.Launch();
         }
     }
 }

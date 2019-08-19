@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ChatroomApi.Models
+﻿namespace ChatroomApi.Models
 {
+    using System;
+
+    [Serializable]
     public class MessageModel
     {
         public string Nick { get; set; }
